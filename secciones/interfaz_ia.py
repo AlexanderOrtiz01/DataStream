@@ -93,10 +93,19 @@ def mostrar():
     if hay_archivo():
         fuentes[f"Archivo cargado: {obtener_nombre()}"] = "archivo"
 
-    # Controles superiores: fuente de datos e IA. La seleccion se guarda en la
-    # sesion (key="ia_fuente") para que se mantenga entre preguntas y navegacion.
+    # Controles superiores: fuente de datos e IA.
     opciones = list(fuentes.keys())
-    if st.session_state.get("ia_fuente") not in opciones:
+
+    # Persistencia entre secciones de la sidebar. Al navegar a otra seccion,
+    # Streamlit descarta el estado del widget con clave "ia_fuente" (deja de
+    # renderizarse) y al volver se reiniciaba a la opcion por defecto. Guardamos
+    # una copia en una clave propia, "ia_fuente_guardada" (no ligada a ningun
+    # widget, por lo que sobrevive a la navegacion); si el widget perdio su
+    # estado, lo rehidratamos desde ella sin pisar una eleccion nueva del usuario.
+    if "ia_fuente" not in st.session_state:
+        guardada = st.session_state.get("ia_fuente_guardada", opciones[0])
+        st.session_state["ia_fuente"] = guardada if guardada in opciones else opciones[0]
+    elif st.session_state["ia_fuente"] not in opciones:
         st.session_state["ia_fuente"] = opciones[0]  # reconcilia si cambian las fuentes
 
     col_src, col_ia = st.columns([3, 2])
@@ -105,6 +114,8 @@ def mostrar():
             etiqueta = st.selectbox("Datos a consultar", opciones, key="ia_fuente")
         else:
             etiqueta = st.session_state["ia_fuente"]
+    # Copia que sobrevive a la navegacion entre secciones de la sidebar.
+    st.session_state["ia_fuente_guardada"] = etiqueta
     with col_ia:
         usar_ia = (st.toggle("Usar IA", value=True)
                    if hay_api_key() else False)
