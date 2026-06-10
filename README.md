@@ -24,15 +24,14 @@ streamlit run app.py
 
 La app abre en `http://localhost:8501`.
 
-## 🔑 Funciones de IA (Gemini)
+## 🔑 Funciones de IA
 
-Las opciones **6 (Sentimientos)** y **7 (Interfaz IA)** pueden usar **Gemini**.
-Configura tu API key (gratuita en <https://aistudio.google.com/app/apikey>) de
-cualquiera de estas formas:
+Las opciones **6 (Sentimientos)** y **7 (Interfaz IA)** pueden usar un modelo
+de **IA generativa**. Configura tu API key de cualquiera de estas formas:
 
-- En la **barra lateral** → *Configurar Gemini (IA)* (recomendado).
-- Variable de entorno: `setx GEMINI_API_KEY "tu_clave"`.
-- Archivo `.streamlit/secrets.toml` con `GEMINI_API_KEY = "tu_clave"`.
+- En la **barra lateral** → *Configurar IA* (recomendado).
+- Variable de entorno: `setx IA_API_KEY "tu_clave"`.
+- Archivo `.streamlit/secrets.toml` con `IA_API_KEY = "tu_clave"`.
 
 Sin API key, ambas opciones siguen funcionando con motores internos (analizador
 léxico de sentimientos y motor de preguntas frecuentes).
@@ -69,7 +68,7 @@ DataStream/
 │   ├── carga_archivos.py
 │   ├── sentimientos.py
 │   └── interfaz_ia.py
-├── utils/                 # Datos (carga + limpieza), IA (Gemini), sentimiento, scraping
+├── utils/                 # Datos (carga + limpieza), IA, sentimiento, scraping
 ├── requirements.txt
 └── README.md
 ```

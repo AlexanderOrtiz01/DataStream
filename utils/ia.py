@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 """
-Integracion con Gemini (Google) mediante la API REST.
+Integracion con un modelo de IA generativa mediante la API REST.
 
-Se usa la API REST con `requests` para evitar dependencias del SDK
-deprecado `google.generativeai`. La clave se obtiene, en orden:
-  1. st.secrets["GEMINI_API_KEY"]
-  2. variable de entorno GEMINI_API_KEY
+Se usa la API REST con `requests` para evitar dependencias de SDK externos.
+La clave se obtiene, en orden:
+  1. st.secrets["IA_API_KEY"]
+  2. variable de entorno IA_API_KEY
   3. lo que el usuario escriba en la barra lateral (session_state)
 
-Los nombres de modelo de Gemini cambian con el tiempo (los 1.5 fueron
-retirados en 2025). Por eso, en lugar de adivinar, se consulta a la API que
-modelos admite la clave (ListModels) y se usa uno que soporte generateContent.
+Los nombres de modelo del proveedor cambian con el tiempo. Por eso, en lugar
+de adivinar, se consulta a la API que modelos admite la clave (ListModels) y
+se usa uno que soporte generateContent.
 """
 import os
 import requests
@@ -28,15 +28,15 @@ _MODELOS_RESPALDO = [
 
 
 def obtener_api_key() -> str | None:
-    """Recupera la API key de Gemini desde secrets, entorno o session_state."""
+    """Recupera la API key de IA desde secrets, entorno o session_state."""
     try:
-        if "GEMINI_API_KEY" in st.secrets:
-            return st.secrets["GEMINI_API_KEY"]
+        if "IA_API_KEY" in st.secrets:
+            return st.secrets["IA_API_KEY"]
     except Exception:
         pass
-    if os.environ.get("GEMINI_API_KEY"):
-        return os.environ["GEMINI_API_KEY"]
-    return st.session_state.get("gemini_api_key") or None
+    if os.environ.get("IA_API_KEY"):
+        return os.environ["IA_API_KEY"]
+    return st.session_state.get("ia_api_key") or None
 
 
 def hay_api_key() -> bool:
@@ -74,15 +74,15 @@ def _modelos_disponibles(api_key: str) -> list:
     return modelos
 
 
-def preguntar_gemini(prompt: str, temperatura: float = 0.3) -> str:
+def preguntar_ia(prompt: str, temperatura: float = 0.3) -> str:
     """
-    Envia un prompt a Gemini y devuelve el texto de respuesta.
+    Envia un prompt al modelo de IA y devuelve el texto de respuesta.
     Lanza RuntimeError con un mensaje claro si algo falla.
     """
     api_key = obtener_api_key()
     if not api_key:
         raise RuntimeError(
-            "No hay una API key de Gemini configurada. Ingresala en la barra lateral."
+            "No hay una API key de IA configurada. Ingresala en la barra lateral."
         )
 
     # Modelos que admite la clave + respaldo (sin duplicados), probando los primeros
@@ -108,7 +108,7 @@ def preguntar_gemini(prompt: str, temperatura: float = 0.3) -> str:
                 return data["candidates"][0]["content"]["parts"][0]["text"].strip()
             # 404 (modelo inexistente) / 400 (no soportado) -> probar el siguiente
             if resp.status_code in (400, 404):
-                ultimo_error = f"Modelo {modelo}: {resp.status_code}."
+                ultimo_error = f"Respuesta {resp.status_code} del servicio de IA."
                 continue
             # 403 / 429 u otros: error de la clave o cuota, no seguir probando
             raise RuntimeError(f"Error {resp.status_code}: {resp.text[:200]}")
@@ -117,8 +117,6 @@ def preguntar_gemini(prompt: str, temperatura: float = 0.3) -> str:
         except Exception as e:  # noqa: BLE001
             ultimo_error = str(e)
 
-    disp = ", ".join(disponibles) if disponibles else "ninguno detectado"
     raise RuntimeError(
-        (ultimo_error or "No se pudo contactar a Gemini.")
-        + f" Modelos disponibles para tu clave: {disp}."
+        ultimo_error or "No se pudo contactar al servicio de IA."
     )

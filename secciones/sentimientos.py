@@ -5,7 +5,7 @@ import plotly.express as px
 import streamlit as st
 
 from utils.scraping import scrape_url, OPINIONES_DEMO
-from utils.sentimiento import analizar_lexico, analizar_gemini
+from utils.sentimiento import analizar_lexico, analizar_ia
 from utils.filtro_opiniones import filtrar_comentarios
 from utils.ia import hay_api_key
 
@@ -100,19 +100,19 @@ def mostrar():
     st.subheader("3 · Analisis de sentimientos")
     opciones_motor = ["Lexico en espaniol (sin conexion)"]
     if hay_api_key():
-        opciones_motor.insert(0, "Gemini (IA)")
+        opciones_motor.insert(0, "IA (mas preciso)")
     motor = st.selectbox("Motor de analisis", opciones_motor)
 
     if not st.button("Analizar sentimientos", type="primary"):
         return
 
-    if motor.startswith("Gemini"):
+    if motor.startswith("IA"):
         try:
-            with st.spinner("Consultando a Gemini..."):
-                etiquetas = analizar_gemini(opiniones)
+            with st.spinner("Consultando a la IA..."):
+                etiquetas = analizar_ia(opiniones)
             puntajes = [None] * len(opiniones)
         except Exception as e:  # noqa: BLE001
-            st.warning(f"Fallo Gemini ({e}). Se usa el analizador lexico.")
+            st.warning(f"Fallo la IA ({e}). Se usa el analizador lexico.")
             resultados = [analizar_lexico(o) for o in opiniones]
             etiquetas = [r["sentimiento"] for r in resultados]
             puntajes = [r["puntaje"] for r in resultados]

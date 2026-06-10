@@ -42,7 +42,7 @@ def mostrar():
 | 4 | **Sistema de Recomendacion** | Recomendador de empleos basado en contenido. |
 | 5 | **Carga de Archivos** | Analisis y graficos de archivos CSV/Excel del usuario. |
 | 6 | **Sentimientos y Scraping** | Lectura de opiniones de la web y analisis de sentimientos. |
-| 7 | **Interfaz IA (Gemini)** | Consultas en lenguaje natural sobre el dataset. |
+| 7 | **Interfaz IA** | Consultas en lenguaje natural sobre el dataset. |
         """
     )
 

@@ -178,7 +178,7 @@ def _filtrar_opiniones_ia(lista) -> dict:
     Devuelve el mismo formato que `filtrar_opiniones`. Lanza excepcion si la
     respuesta del modelo no se puede interpretar (para poder caer a la heuristica).
     """
-    from utils.ia import preguntar_gemini
+    from utils.ia import preguntar_ia
 
     textos = [" ".join(str(t).split()) for t in lista]
     enumeradas = "\n".join(f"{i + 1}. {t}" for i, t in enumerate(textos))
@@ -196,7 +196,7 @@ def _filtrar_opiniones_ia(lista) -> dict:
         "responde exactamente 'ninguno'. No agregues explicaciones.\n\n"
         + enumeradas
     )
-    respuesta = preguntar_gemini(prompt, temperatura=0.0)
+    respuesta = preguntar_ia(prompt, temperatura=0.0)
 
     numeros = {int(n) for n in re.findall(r"\d+", respuesta)}
     validos = {n for n in numeros if 1 <= n <= len(textos)}

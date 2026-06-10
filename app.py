@@ -41,7 +41,7 @@ PAGINAS = {
                 icon=":material/upload_file:", url_path="carga-archivos"),
         st.Page(sentimientos.mostrar, title="Sentimientos y Scraping",
                 icon=":material/reviews:", url_path="sentimientos"),
-        st.Page(interfaz_ia.mostrar, title="Interfaz IA (Gemini)",
+        st.Page(interfaz_ia.mostrar, title="Interfaz IA",
                 icon=":material/auto_awesome:", url_path="interfaz-ia"),
     ],
 }
@@ -56,19 +56,19 @@ def encabezado_sidebar():
 
 
 def configuracion_sidebar():
-    """Configuracion de Gemini y ayuda, debajo de la navegacion."""
+    """Configuracion de la IA y ayuda, debajo de la navegacion."""
     with st.sidebar:
         st.divider()
 
         # Componente expander (layout) para la configuracion de la API key
-        with st.expander("Configurar Gemini (IA)"):
+        with st.expander("Configurar IA"):
             st.caption(
-                "Para las opciones de IA (sentimientos y consultas). Obten una "
-                "clave gratuita en aistudio.google.com/app/apikey.")
-            clave = st.text_input("API key de Gemini", type="password",
-                                  value=st.session_state.get("gemini_api_key", ""))
+                "Para las opciones de IA (sentimientos y consultas). Introduce "
+                "tu clave de API para habilitarlas.")
+            clave = st.text_input("API key de IA", type="password",
+                                  value=st.session_state.get("ia_api_key", ""))
             if clave:
-                st.session_state["gemini_api_key"] = clave
+                st.session_state["ia_api_key"] = clave
                 st.success("Clave guardada para esta sesion.")
 
         # Componente popover (layout) con informacion del proyecto
@@ -84,7 +84,7 @@ def configuracion_sidebar():
                 "[Data Analyst Jobs (Kaggle)]"
                 "(https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs)")
 
-        st.caption("Hecho con Streamlit · scikit-learn · Plotly · Gemini")
+        st.caption("Hecho con Streamlit · scikit-learn · Plotly · IA")
 
 
 def main():

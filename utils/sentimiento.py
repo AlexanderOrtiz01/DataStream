@@ -5,7 +5,7 @@ Analisis de sentimientos.
 Dos motores:
   - 'lexico': analizador propio basado en un diccionario de palabras en
     espaniol (funciona siempre, sin internet ni API).
-  - 'gemini': clasificacion mediante el modelo de IA (mas preciso).
+  - 'ia': clasificacion mediante el modelo de IA (mas preciso).
 """
 import re
 import unicodedata
@@ -71,13 +71,13 @@ def analizar_lexico(texto: str) -> dict:
             "positivas": pos, "negativas": neg}
 
 
-def analizar_gemini(textos: list) -> list:
+def analizar_ia(textos: list) -> list:
     """
-    Clasifica una lista de opiniones con Gemini en un solo prompt.
+    Clasifica una lista de opiniones con IA en un solo prompt.
     Devuelve una lista de etiquetas ('Positivo'/'Negativo'/'Neutral').
     Si algo falla, lanza la excepcion para que el llamador haga fallback.
     """
-    from utils.ia import preguntar_gemini
+    from utils.ia import preguntar_ia
     enumeradas = "\n".join(f"{i+1}. {t}" for i, t in enumerate(textos))
     prompt = (
         "Clasifica el sentimiento de cada una de las siguientes opiniones sobre "
@@ -85,7 +85,7 @@ def analizar_gemini(textos: list) -> list:
         "Responde solo con el numero y la etiqueta, un resultado por linea, "
         "sin explicaciones.\n\n" + enumeradas
     )
-    respuesta = preguntar_gemini(prompt, temperatura=0.0)
+    respuesta = preguntar_ia(prompt, temperatura=0.0)
     etiquetas = []
     for linea in respuesta.splitlines():
         l = linea.lower()

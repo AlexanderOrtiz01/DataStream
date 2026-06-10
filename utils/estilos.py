@@ -108,7 +108,7 @@ a:hover { color: var(--ds-primary-600); }
   letter-spacing: 0.6px; font-weight: 600;
 }
 
-/* Expander del sidebar (Configurar Gemini): que NO use el fondo claro del
+/* Expander del sidebar (Configurar IA): que NO use el fondo claro del
    tema; transparente con borde sutil para integrarse en el sidebar oscuro. */
 [data-testid="stSidebar"] [data-testid="stExpander"] {
   background: transparent !important;
@@ -121,7 +121,7 @@ a:hover { color: var(--ds-primary-600); }
   background: transparent !important;
 }
 
-/* Inputs dentro del sidebar (p.ej. clave de Gemini): fondo oscuro legible.
+/* Inputs dentro del sidebar (p.ej. clave de IA): fondo oscuro legible.
    Se pinta el CONTENEDOR BaseWeb (no solo el <input>) para que el area del
    icono del ojo no quede en blanco. */
 [data-testid="stSidebar"] [data-baseweb="input"],

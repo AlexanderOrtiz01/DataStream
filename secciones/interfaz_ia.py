@@ -6,12 +6,12 @@ import pandas as pd
 import streamlit as st
 
 from utils.datos import cargar_datos, descripcion_de
-from utils.ia import preguntar_gemini, hay_api_key
+from utils.ia import preguntar_ia, hay_api_key
 from utils.almacen import hay_archivo, obtener_df, obtener_nombre
 
 
 # CSS especifico de esta seccion: saludo centrado con degradado (tonos de la app),
-# al estilo del estado inicial de Gemini. Los mensajes usan st.chat_message.
+# al estilo del estado inicial de un asistente de chat. Usan st.chat_message.
 _CSS_IA = """
 <style>
 .ia-hero { text-align: center; margin: 6vh 0 1.2rem; }
@@ -25,7 +25,7 @@ _CSS_IA = """
   color: var(--ds-muted); font-size: 1rem; margin: 0.6rem 0 0;
 }
 
-/* Usuario: burbuja COMPACTA pegada a la derecha, sin avatar (estilo Gemini). */
+/* Usuario: burbuja COMPACTA pegada a la derecha, sin avatar (estilo chat). */
 [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"])
 [data-testid="stChatMessageAvatarUser"] {
   display: none;
@@ -38,7 +38,7 @@ _CSS_IA = """
   background: var(--ds-primary-soft);
   border-radius: 18px; padding: 0.4rem 1rem;
 }
-/* IA: texto plano a la izquierda, sin avatar (como en Gemini). */
+/* IA: texto plano a la izquierda, sin avatar (estilo chat). */
 [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"])
 [data-testid="stChatMessageAvatarAssistant"] {
   display: none;
@@ -106,11 +106,11 @@ def mostrar():
         else:
             etiqueta = st.session_state["ia_fuente"]
     with col_ia:
-        usar_gemini = (st.toggle("Usar Gemini (IA)", value=True)
-                       if hay_api_key() else False)
+        usar_ia = (st.toggle("Usar IA", value=True)
+                   if hay_api_key() else False)
 
     if not hay_api_key():
-        st.caption("Sin clave de Gemini: respuestas con el motor interno. Agregala "
+        st.caption("Sin clave de IA: respuestas con el motor interno. Agregala "
                    "en la barra lateral para respuestas flexibles y leer los registros.")
 
     # DataFrame segun la fuente elegida.
@@ -152,10 +152,10 @@ def mostrar():
     # mensajes aparezcan arriba (el campo de entrada queda abajo).
     st.session_state["ia_historial"].append({"role": "user", "content": pregunta})
     respuesta = None
-    if usar_gemini:
+    if usar_ia:
         try:
             with st.spinner("Generando respuesta..."):
-                respuesta = _responder_con_gemini(df, pregunta)
+                respuesta = _responder_con_ia(df, pregunta)
         except Exception as e:  # noqa: BLE001
             respuesta = (_responder_local(df, pregunta)
                          + f"\n\n*(No se pudo usar la IA: {e})*")
@@ -203,7 +203,7 @@ def _contexto(df: pd.DataFrame):
     return "\n".join(lineas), truncado
 
 
-def _responder_con_gemini(df: pd.DataFrame, pregunta: str) -> str:
+def _responder_con_ia(df: pd.DataFrame, pregunta: str) -> str:
     contexto, truncado = _contexto(df)
     nota = (" Si la pregunta es sobre un registro que no aparece en la muestra de "
             "filas proporcionada, indica que no esta en los datos disponibles."
@@ -217,7 +217,7 @@ def _responder_con_gemini(df: pd.DataFrame, pregunta: str) -> str:
         f"Pregunta del usuario: {pregunta}\n"
         "Si la pregunta pide un calculo, da el numero exacto." + nota
     )
-    return preguntar_gemini(prompt)
+    return preguntar_ia(prompt)
 
 
 # --------------------------------------------------------------------------- #
@@ -283,5 +283,5 @@ def _responder_local(df: pd.DataFrame, pregunta: str) -> str:
     return (
         "No pude interpretar la pregunta con el motor interno. Prueba a reformularla "
         "(por ejemplo: '¿Cual es la media del campo salario_usd?') o configura una "
-        "API key de Gemini en la barra lateral para respuestas mas flexibles."
+        "API key de IA en la barra lateral para respuestas mas flexibles."
     )
