@@ -174,6 +174,20 @@ a:hover { color: var(--ds-primary-600); }
   color: var(--ds-sidebar-text) !important;
 }
 
+/* Boton "Regresar al portafolio" (enlace HTML bajo el encabezado del sidebar) */
+[data-testid="stSidebar"] a.btn-portafolio {
+  display: block; text-align: center; margin: 12px 0 4px;
+  background: var(--ds-primary); color: #ffffff !important;
+  border-radius: 8px; padding: 0.5rem 1rem; font-weight: 600;
+  font-size: 0.9rem; letter-spacing: 0.2px;
+  box-shadow: 0 2px 6px rgba(8,214,101,0.30);
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+[data-testid="stSidebar"] a.btn-portafolio:hover {
+  background: var(--ds-primary-600); color: #ffffff !important;
+}
+[data-testid="stSidebar"] a.btn-portafolio:active { transform: translateY(1px); }
+
 /* ===================== Botones ===================== */
 .stButton > button,
 .stDownloadButton > button,
