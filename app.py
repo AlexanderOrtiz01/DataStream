@@ -96,17 +96,12 @@ def configuracion_sidebar():
 
         st.caption("Hecho con Streamlit · scikit-learn · Plotly · IA")
 
+        st.divider()
+        st.link_button("← Regresar al portafolio", _URL_PORTAFOLIO,
+                       type="primary", width="stretch")
+
 
 _URL_PORTAFOLIO = "https://alexanderortiz01.github.io/PortfolioEdwinOrtiz/#portfolio"
-
-
-def pie_portafolio():
-    """Boton al final de cada pagina para volver al portafolio (seccion DataStream)."""
-    st.divider()
-    _, centro, _ = st.columns([1, 2, 1])
-    with centro:
-        st.link_button("← Regresar al portafolio", _URL_PORTAFOLIO,
-                       width="stretch")
 
 
 def main():
@@ -115,7 +110,6 @@ def main():
     navegacion = st.navigation(PAGINAS, position="sidebar")
     configuracion_sidebar()
     navegacion.run()
-    pie_portafolio()
 
 
 if __name__ == "__main__":
