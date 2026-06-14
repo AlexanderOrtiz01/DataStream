@@ -226,7 +226,7 @@ def _graficador(df: pd.DataFrame):
         st.caption(f"`{campo}` es **cuantitativo**: histograma + diagrama de caja.")
         fig = px.histogram(df, x=campo, nbins=30, marginal="box",
                            title=f"Distribucion de {campo}",
-                           color_discrete_sequence=["#4C78A8"])
+                           color_discrete_sequence=["#08D665"])
         st.plotly_chart(fig, width="stretch")
     else:
         st.caption(f"`{campo}` es **categorico**: grafico de barras de frecuencias.")
@@ -278,7 +278,8 @@ def _hipotesis_valoracion(df: pd.DataFrame):
                      title="Relacion entre valoracion de la empresa y salario",
                      labels={"valoracion": "Valoracion (1-5)",
                              "salario_prom_k": "Salario promedio (miles USD)"},
-                     trendline_color_override="#7267ef")
+                     color_discrete_sequence=["#9aa7b3"],
+                     trendline_color_override="#08D665")
     st.plotly_chart(fig, width="stretch")
 
     valida = (p < 0.05) and (r > 0.1)

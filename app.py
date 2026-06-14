@@ -7,12 +7,22 @@ Tarea Laboratorio I y II · Computo 3
 Ejecutar:  streamlit run app.py
 """
 import streamlit as st
+import plotly.express as px
 
 from secciones import (
     inicio, exploratorio, aprendizaje, recomendacion,
     carga_archivos, sentimientos, interfaz_ia,
 )
 from utils.estilos import aplicar_estilos
+
+# Paleta de los graficos alineada al portafolio: el verde #08D665 encabeza la
+# secuencia cualitativa (sustituye al azul/morado por defecto de Plotly) y las
+# escalas continuas usan tonos de verde. Aplica a todos los px.* de la app.
+px.defaults.color_discrete_sequence = [
+    "#08D665", "#19D3F3", "#FFA15A", "#EF553B",
+    "#B6E880", "#FF6692", "#FECB52", "#1f9e6b",
+]
+px.defaults.color_continuous_scale = "Greens"
 
 st.set_page_config(
     page_title="DataStream · Ciencia de Datos",

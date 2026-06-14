@@ -2,9 +2,9 @@
 [browser]
 gatherUsageStats = false
 
-# Tema: color primario morado de la app (DashboardKit) para que los controles
-# nativos (toggles, foco de inputs, sliders, spinner, radios...) usen el morado
+# Tema: color primario verde (igual al del portafolio) para que los controles
+# nativos (toggles, foco de inputs, sliders, spinner, radios...) usen el verde
 # en lugar del rojo por defecto de Streamlit.
 [theme]
 base = "light"
-primaryColor = "#7267ef"
+primaryColor = "#08D665"

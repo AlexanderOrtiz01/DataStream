@@ -177,15 +177,15 @@ def _entrenar_regresion(algoritmo, predictoras, objetivo,
     fig = go.Figure()
     fig.add_trace(go.Scatter(
         x=y_train, y=pred_train, mode="markers", name="Entrenamiento",
-        marker=dict(color="#4C78A8", opacity=0.5)))
+        marker=dict(color="#FFA15A", opacity=0.5)))
     fig.add_trace(go.Scatter(
         x=y_test, y=pred_test, mode="markers", name="Prueba (predicciones)",
-        marker=dict(color="#7267ef", opacity=0.8)))
+        marker=dict(color="#08D665", opacity=0.85)))
     lo = float(min(y_train.min(), y_test.min()))
     hi = float(max(y_train.max(), y_test.max()))
     fig.add_trace(go.Scatter(x=[lo, hi], y=[lo, hi], mode="lines",
                              name="Prediccion perfecta",
-                             line=dict(color="green", dash="dash")))
+                             line=dict(color="#3e4853", dash="dash")))
     fig.update_layout(xaxis_title=f"{objetivo} (real)",
                       yaxis_title=f"{objetivo} (predicho)",
                       title="Ajuste del modelo")
@@ -221,7 +221,7 @@ def _entrenar_clasificacion(algoritmo, predictoras, objetivo,
     clases = sorted(pd.unique(y_test))
     matriz = pd.crosstab(pd.Series(y_test.values, name="Real"),
                          pd.Series(pred_test, name="Predicho"))
-    fig = px.imshow(matriz, text_auto=True, color_continuous_scale="Blues",
+    fig = px.imshow(matriz, text_auto=True, color_continuous_scale="Greens",
                     title="Matriz de confusion")
     st.plotly_chart(fig, width="stretch")
 
@@ -253,9 +253,9 @@ def _explicacion_regresion():
         st.markdown(
             "- **R²**: proporcion de la varianza explicada (1 = perfecto, 0 = nulo).\n"
             "- **MAE / RMSE**: error promedio de las predicciones (menor es mejor).\n"
-            "- En la grafica, cuanto mas cerca esten los puntos de la linea verde "
-            "discontinua, mejor es la prediccion. Los puntos morados son los datos de "
-            "**prueba** y los azules los de **entrenamiento**."
+            "- En la grafica, cuanto mas cerca esten los puntos de la linea gris "
+            "discontinua, mejor es la prediccion. Los puntos verdes son los datos de "
+            "**prueba** y los naranjas los de **entrenamiento**."
         )
 
 

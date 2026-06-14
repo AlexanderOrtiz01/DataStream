@@ -9,16 +9,16 @@ Uso: llamar a `aplicar_estilos()` una vez por render, desde `app.main()`.
 """
 import streamlit as st
 
-# Paleta y tokens extraidos de DashboardKit (SCSS settings):
-#   primario #7267ef · fondo #f0f2f8 · sidebar #1c232f · tipografia Inter
+# Paleta y tokens (base DashboardKit, primario alineado al portafolio):
+#   primario #08D665 (verde portafolio) · fondo #f0f2f8 · sidebar #1c232f · Inter
 _CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --ds-primary: #7267ef;
-  --ds-primary-600: #5b50d6;
-  --ds-primary-soft: rgba(114, 103, 239, 0.12);
+  --ds-primary: #08D665;
+  --ds-primary-600: #06b454;
+  --ds-primary-soft: rgba(8, 214, 101, 0.12);
   --ds-bg: #f0f2f8;
   --ds-sidebar: #1c232f;
   --ds-sidebar-brand: #161c25;
@@ -180,7 +180,7 @@ a:hover { color: var(--ds-primary-600); }
 .stFormSubmitButton > button {
   background: var(--ds-primary); color: #ffffff; border: none;
   border-radius: 8px; padding: 0.5rem 1.1rem; font-weight: 500;
-  box-shadow: 0 2px 6px rgba(114,103,239,0.30);
+  box-shadow: 0 2px 6px rgba(8,214,101,0.30);
   transition: background 0.15s ease, transform 0.05s ease;
 }
 .stButton > button:hover,
@@ -276,7 +276,7 @@ a:hover { color: var(--ds-primary-600); }
 [data-testid="stAlert"] { border-radius: var(--ds-radius); border: none; }
 
 /* ===================== Multiselect (chips de seleccion) ===================== */
-/* Por defecto Streamlit los pinta con su primario rojo; los pasamos al morado. */
+/* Por defecto Streamlit los pinta con su primario rojo; los pasamos al verde. */
 [data-testid="stMain"] [data-baseweb="tag"] {
   background: var(--ds-primary) !important; border-radius: 6px !important;
 }
