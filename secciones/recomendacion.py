@@ -53,7 +53,7 @@ def mostrar():
 def _por_empleo(df: pd.DataFrame, matriz: np.ndarray):
     nombres = (df["puesto"] + " — " + df["empresa"] + "  (" + df["codigo"] + ")").tolist()
     idx = st.selectbox("Elige una oferta de empleo de interes",
-                       range(len(nombres)), format_func=lambda i: nombres[i])
+                       range(len(nombres)), format_func=lambda i: str(nombres[i]))
     n = st.slider("Cantidad de recomendaciones", 3, 10, 5)
 
     base = df.iloc[idx]

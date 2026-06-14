@@ -65,10 +65,14 @@ def _parsear_salario(texto: str):
 
 
 def _limpiar_categorica(serie: pd.Series) -> pd.Series:
-    """Convierte marcadores de faltante ('-1', 'Unknown', vacio) en 'Desconocido'."""
+    """Convierte marcadores de faltante ('-1', 'Unknown', NaN, vacio) en 'Desconocido'."""
     s = serie.astype(str).str.strip()
-    faltantes = {"-1", "unknown", "unknown / non-applicable", "nan", ""}
-    return s.where(~s.str.lower().isin(faltantes), _TXT_DESCONOCIDO)
+    faltantes = {"-1", "unknown", "unknown / non-applicable", "nan", "none", ""}
+    s = s.where(~s.str.lower().isin(faltantes), _TXT_DESCONOCIDO)
+    # En pandas >= 3.0 astype(str) CONSERVA los NaN (ya no los vuelve el texto
+    # "nan"), por lo que no los capta el filtro de arriba: se rellenan aqui para
+    # que ninguna columna categorica quede con NaN (rompe selectbox, get_dummies...).
+    return s.fillna(_TXT_DESCONOCIDO)
 
 
 def _limpiar(crudo: pd.DataFrame) -> pd.DataFrame:
