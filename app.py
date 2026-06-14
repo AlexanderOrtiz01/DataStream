@@ -63,12 +63,6 @@ def encabezado_sidebar():
         with st.container():
             st.markdown("## DataStream")
             st.caption("Ciencia de Datos · Ciclo I-2026")
-            # Enlace de vuelta al portafolio (misma pestana: target="_self")
-            st.markdown(
-                f'<a class="btn-portafolio" href="{_URL_PORTAFOLIO}" '
-                f'target="_self">← Regresar al portafolio</a>',
-                unsafe_allow_html=True,
-            )
 
 
 def configuracion_sidebar():
@@ -101,6 +95,10 @@ def configuracion_sidebar():
                 "(https://www.kaggle.com/datasets/andrewmvd/data-analyst-jobs)")
 
         st.caption("Hecho con Streamlit · scikit-learn · Plotly · IA")
+
+        st.divider()
+        st.link_button("← Regresar al portafolio", _URL_PORTAFOLIO,
+                       type="primary", width="stretch")
 
 
 _URL_PORTAFOLIO = "https://alexanderortiz01.github.io/PortfolioEdwinOrtiz/#portfolio"
