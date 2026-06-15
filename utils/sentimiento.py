@@ -48,7 +48,9 @@ def analizar_lexico(texto: str) -> dict:
     palabras = re.findall(r"[a-z]+", _normalizar(texto))
     pos = neg = 0
     for i, p in enumerate(palabras):
-        negado = i > 0 and palabras[i - 1] in _NEGADORES
+        # Negacion: se mira hasta 2 palabras atras para captar construcciones
+        # como "no me gusta" o "no es bueno", no solo la palabra inmediata.
+        negado = any(w in _NEGADORES for w in palabras[max(0, i - 2):i])
         if p in _POSITIVAS:
             if negado:
                 neg += 1

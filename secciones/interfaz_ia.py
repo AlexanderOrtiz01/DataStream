@@ -239,12 +239,21 @@ def _normalizar(texto: str) -> str:
 
 
 def _buscar_columna(df: pd.DataFrame, texto: str):
-    """Intenta detectar a que columna se refiere la pregunta."""
+    """Intenta detectar a que columna se refiere la pregunta.
+
+    Compara con limites de palabra (\\b) para no confundir un nombre de columna
+    con otro que lo contenga (p. ej. 'empresa' dentro de 'antiguedad_empresa') y,
+    si varias columnas coinciden, devuelve la mas larga (la mas especifica).
+    """
     t = _normalizar(texto)
+    mejor = None
     for col in df.columns:
-        if _normalizar(col) in t or _normalizar(col).replace("_", " ") in t:
-            return col
-    return None
+        norm = _normalizar(col)
+        for variante in {norm, norm.replace("_", " ")}:
+            if re.search(r"\b" + re.escape(variante) + r"\b", t):
+                if mejor is None or len(variante) > len(mejor[1]):
+                    mejor = (col, variante)
+    return mejor[0] if mejor else None
 
 
 def _responder_local(df: pd.DataFrame, pregunta: str) -> str:
@@ -259,6 +268,11 @@ def _responder_local(df: pd.DataFrame, pregunta: str) -> str:
         return f"El dataset tiene **{df.shape[0]} registros (filas)**."
 
     col = _buscar_columna(df, pregunta)
+
+    if "mediana" in t:
+        if col is not None and pd.api.types.is_numeric_dtype(df[col]):
+            return f"La mediana del campo **{col}** es **{df[col].median():.2f}**."
+        return "Indica un campo numerico para calcular la mediana."
 
     if "media" in t or "promedio" in t:
         if col is not None and pd.api.types.is_numeric_dtype(df[col]):
@@ -286,10 +300,6 @@ def _responder_local(df: pd.DataFrame, pregunta: str) -> str:
     if "suma" in t or "total" in t:
         if col is not None and pd.api.types.is_numeric_dtype(df[col]):
             return f"La suma del campo **{col}** es **{df[col].sum():.2f}**."
-
-    if "mediana" in t:
-        if col is not None and pd.api.types.is_numeric_dtype(df[col]):
-            return f"La mediana del campo **{col}** es **{df[col].median():.2f}**."
 
     return (
         "No pude interpretar la pregunta con el motor interno. Prueba a reformularla "
