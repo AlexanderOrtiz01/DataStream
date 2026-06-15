@@ -35,6 +35,12 @@ def mostrar():
         st.caption(f"{len(opiniones)} opiniones de demostracion cargadas.")
 
     elif fuente.startswith("Web scraping"):
+        st.warning(
+            "Para usar esta funcion, la pagina **no debe exigir iniciar sesion** "
+            "con una cuenta para ver su contenido. Si el sitio pide login (por "
+            "ejemplo, redes sociales con acceso restringido), el scraping no podra "
+            "leer las opiniones y no funcionara. Usa enlaces de paginas publicas "
+            "(foros abiertos, noticias, resenas visibles sin registrarse).")
         url = st.text_input("URL del sitio (foro, noticias, red social, etc.)",
                             placeholder="https://...")
         if st.button("Leer opiniones de la URL", type="primary"):
